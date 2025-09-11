@@ -36,7 +36,7 @@ class HTTPClient:
             "Accept": "application/json",
         }
         if api_key:
-            self.default_headers["Authorization"] = f"Bearer {api_key}"
+            self.default_headers["X-Api-Key"] = f"{api_key}"
 
         if headers:
             self.default_headers.update(headers)

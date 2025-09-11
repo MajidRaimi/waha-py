@@ -131,6 +131,19 @@ class SessionInfo(BaseResponse):
     config: Optional[SessionConfig] = None
     me: Optional[Dict[str, Any]] = None
     engine: Optional[EngineType] = None
+    engine_raw: Optional[Any] = None
+
+    def __init__(self, **data):
+        engine = data.get("engine")
+        data["engine_raw"] = engine
+        if isinstance(engine, dict):
+            data["engine"] = None
+        elif isinstance(engine, str):
+            try:
+                data["engine"] = EngineType(engine)
+            except ValueError:
+                data["engine"] = None
+        super().__init__(**data)
 
 
 class MeInfo(BaseResponse):

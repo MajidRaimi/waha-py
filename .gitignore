@@ -270,3 +270,6 @@ scratch/
 
 # Kiro IDE
 .kiro/
+
+# test.py
+test.py

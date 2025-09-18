@@ -761,3 +761,78 @@ class AsyncMessagesNamespace:
             session=session,
         )
         return await self._http_client.put("/api/reaction", data=request_data)
+
+    async def send_seen(
+        self,
+        chat_id: str,
+        session: str = "default",
+        message_id: Optional[str] = None,
+    ) -> Dict[str, Any]:
+        """
+        Mark messages as seen (async version).
+
+        Args:
+            chat_id: Chat ID to mark messages as seen
+            session: Session name
+            message_id: Specific message ID to mark as seen
+
+        Returns:
+            Response from the API
+
+        Example:
+            await client.messages.send_seen("1234567890@c.us")
+        """
+        request_data = SendSeenRequest(
+            chatId=chat_id,
+            session=session,
+            messageId=message_id,
+        )
+        return await self._http_client.post("/api/sendSeen", data=request_data)
+
+    async def start_typing(
+        self,
+        chat_id: str,
+        session: str = "default",
+    ) -> Dict[str, Any]:
+        """
+        Start typing indicator (async version).
+
+        Args:
+            chat_id: Chat ID to show typing in
+            session: Session name
+
+        Returns:
+            Response from the API
+
+        Example:
+            await client.messages.start_typing("1234567890@c.us")
+        """
+        request_data = ChatRequest(
+            chatId=chat_id,
+            session=session,
+        )
+        return await self._http_client.post("/api/startTyping", data=request_data)
+
+    async def stop_typing(
+        self,
+        chat_id: str,
+        session: str = "default",
+    ) -> Dict[str, Any]:
+        """
+        Stop typing indicator (async version).
+
+        Args:
+            chat_id: Chat ID to stop typing in
+            session: Session name
+
+        Returns:
+            Response from the API
+
+        Example:
+            await client.messages.stop_typing("1234567890@c.us")
+        """
+        request_data = ChatRequest(
+            chatId=chat_id,
+            session=session,
+        )
+        return await self._http_client.post("/api/stopTyping", data=request_data)

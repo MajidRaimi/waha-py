@@ -15,7 +15,7 @@ from .exceptions import (
 )
 from .types import *
 
-__version__ = "1.0.2"
+__version__ = "1.0.3"
 __author__ = "WAHA"
 __email__ = "support@waha.dev"
 

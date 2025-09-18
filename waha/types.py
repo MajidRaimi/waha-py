@@ -7,7 +7,7 @@ Contains all request/response models based on the OpenAPI specification.
 from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional, Union
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 
 
 # Base Models
@@ -400,14 +400,37 @@ class WAMessage(BaseResponse):
 
     id: str
     timestamp: int
-    from_: WAMessageFrom = Field(alias="from")
+    from_: Optional[Union[WAMessageFrom, str]] = Field(alias="from", default=None)
     fromMe: bool
     body: Optional[str] = None
-    type: MessageType
-    ack: Optional[MessageAck] = None
-    chatId: str
+    type: Optional[MessageType] = None
+    ack: Optional[Union[MessageAck, int]] = None
+    chatId: Optional[str] = None
     hasMedia: Optional[bool] = False
     mediaUrl: Optional[str] = None
+    
+    @field_validator('from_', mode='before')
+    @classmethod
+    def validate_from(cls, v):
+        if isinstance(v, str):
+            return WAMessageFrom(id=v)
+        return v
+    
+    @field_validator('ack', mode='before')
+    @classmethod
+    def validate_ack(cls, v):
+        if isinstance(v, int):
+            # Map integer values to MessageAck enum
+            mapping = {
+                0: MessageAck.ERROR,
+                1: MessageAck.PENDING, 
+                2: MessageAck.SERVER,
+                3: MessageAck.DEVICE,
+                4: MessageAck.READ,
+                5: MessageAck.PLAYED
+            }
+            return mapping.get(v, MessageAck.ERROR)
+        return v
 
 
 # Contact Models

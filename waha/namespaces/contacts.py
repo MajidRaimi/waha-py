@@ -35,9 +35,9 @@ class ContactsNamespace:
             if result.numberExists:
                 print(f"Number exists! Chat ID: {result.chatId}")
         """
-        request_data = ContactCheckRequest(phone=phone, session=session)
-        response = self._http_client.post(
-            "/api/contacts/check-exists", data=request_data
+        params = {"phone": phone, "session": session}
+        response = self._http_client.get(
+            "/api/contacts/check-exists", params=params
         )
         return WANumberExistResult(**response)
 
@@ -68,8 +68,8 @@ class AsyncContactsNamespace:
             if result.numberExists:
                 print(f"Number exists! Chat ID: {result.chatId}")
         """
-        request_data = ContactCheckRequest(phone=phone, session=session)
-        response = await self._http_client.post(
-            "/api/contacts/check-exists", data=request_data
+        params = {"phone": phone, "session": session}
+        response = await self._http_client.get(
+            "/api/contacts/check-exists", params=params
         )
         return WANumberExistResult(**response)
